@@ -18,7 +18,7 @@ struct BackgroundParchment: View {
 
 
 extension Button {
-    func doneButton() -> some View {
+    @MainActor func doneButton() -> some View {
         self.font(.largeTitle)
             .padding()
             .buttonStyle(.borderedProminent)

@@ -13,7 +13,7 @@ struct AnimatedBackground: View {
     var body: some View {
         Image("backgroundBeach")
             .resizable()
-            .frame(width:geo.size.width * 3, height: geo.size.height * 1.1)
+            .frame(width:geo.size.width * 3, height: geo.size.height * 1.2)
             .padding(.top, 3)
             .phaseAnimator([false,true]) { content, phase in
                 content

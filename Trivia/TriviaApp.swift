@@ -10,11 +10,12 @@ import SwiftUI
 @main
 struct TriviaApp: App {
     
-    @StateObject private var gameVM = GameVM(repo: QuestionRepository())
+    @State private var gameVM = GameVM()
     
     var body: some Scene {
         WindowGroup {
-            Main(gameVM: gameVM)
+            Main()
+                .environment(gameVM)
         }
     }
 

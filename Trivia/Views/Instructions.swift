@@ -46,8 +46,8 @@ struct Instructions: View {
                 .foregroundColor(.black)
             }
             
-
         }
+        .statusBarHidden()
 
     }
 
@@ -70,22 +70,21 @@ struct InstructionsHowToPlay: View {
             .font(.largeTitle)
             .padding()
         
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             
-            Text("Welcome to Quark Trivia!  In this game you will be asked random questions from the categories and levels of difficulty you choose.")
-                .padding([.horizontal,.bottom])
+            Text("Welcome to Quark Trivia! In this game you will be asked random questions from the categories and levels of difficulty you choose.")
             
             Text("There are 20 questions per game. Each question is worth 5 points but if you guess a wrong answer, you lose a point! 😱")
-                .padding([.horizontal, .bottom])
             
             Text("When you select the correct answer, you will be awarded all the points left for that question and they will be added to your total score.")
-                .padding([.horizontal, .bottom])
             
         }
+        .padding(.horizontal, 24)
         .font(.title3)
         
         Text("Good Luck!")
             .font(.title)
+            .padding(.top,8)
     }
 }
 

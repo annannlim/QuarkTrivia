@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Settings: View {
     
-    @ObservedObject var gameVM: GameVM
+    @Environment(GameVM.self) private var gameVM
   
     var body: some View {
         
@@ -20,34 +20,19 @@ struct Settings: View {
                 BackgroundParchment()
                 
                 VStack {
-                    // iPadBig w=1024 h=1322
-                    // iPadMini w=744 h=1089
-                    // iPhoneMax w=430 h=839
-                   
-//                    if (geo.size.height > 1080) {
-//                        Spacer()
-//                        SettingsCategories(gameVM: gameVM)
-//                        Spacer()
-//                        SettingsLevels(gameVM: gameVM)
-//                        Spacer()
-//                        SettingsSound(gameVM: gameVM)
-//                        Spacer()
-//                        SettingsDone(gameVM: gameVM)
-//                        Spacer()
-//                    } else {
                         ScrollView {
-                            SettingsCategories(gameVM: gameVM)
-                            SettingsLevels(gameVM: gameVM)
-                            SettingsSound(gameVM: gameVM)
+                            SettingsCategories()
+                            SettingsLevels()
+                            SettingsSound()
                         }
-                        SettingsDone(gameVM: gameVM)
-//                    }
+                        SettingsDone()
                 }
                 .foregroundColor(.black)
                 
             }
 
         }
+        .statusBarHidden()
 
     }
     
@@ -55,7 +40,7 @@ struct Settings: View {
 
 struct SettingsCategories : View {
 
-    @ObservedObject var gameVM: GameVM
+    @Environment(GameVM.self) private var gameVM
 
     var body: some View {
         
@@ -105,17 +90,15 @@ struct SettingsCategories : View {
                         gameVM.categories[i].active = true
                     }
                 }
-                
             }
-            
         }
     }
 }
 
 struct SettingsLevels: View {
 
-    @ObservedObject var gameVM: GameVM
-    
+    @Environment(GameVM.self) private var gameVM
+
     var body: some View {
         Text("Select the difficulty levels to include")
             .font(.title)
@@ -175,10 +158,12 @@ struct SettingsLevels: View {
 
 struct SettingsSound: View {
     
-    @ObservedObject var gameVM: GameVM
+    @Environment(GameVM.self) var gameVM
     
     var body: some View {
-        
+    
+        @Bindable var gameVM = gameVM
+
         VStack {
             Text("Set the music and sound options")
                 .font(.title)
@@ -202,8 +187,7 @@ struct SettingsSound: View {
 
 struct SettingsDone: View {
 
-    @ObservedObject var gameVM: GameVM
-
+    @Environment(GameVM.self) private var gameVM
     @Environment(\.dismiss) private var dismiss
     @State private var showAlert = false
     
@@ -229,5 +213,6 @@ struct SettingsDone: View {
 }
 
 #Preview {
-    Settings(gameVM: GameVM(repo: QuestionRepository()))
+    Settings()
+        .environment(GameVM())
 }

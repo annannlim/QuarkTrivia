@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import UIKit
+import AVKit
 
 enum Status {
     case NotStarted
@@ -16,32 +16,33 @@ enum Status {
 }
 
 @MainActor
-final class GameVM: ObservableObject {
-  
-    private let repo : QuestionRepository
-    
+@Observable
+class GameVM {
+      
     // MARK: - Categories, Levels, Sound and Scores processing
 
-    @AppStorage(K.USER_DEFAULTS_SETTINGS_SET) var settingsSet : Bool?
-    @AppStorage(K.SOUND_ON) var soundOn : Bool = true
-    @AppStorage(K.MUSIC_ON) var musicOn : Bool = true
+//    @AppStorage(K.USER_DEFAULTS_SETTINGS_SET) var settingsSet : Bool?
+//    @AppStorage(K.SOUND_ON) var soundOn : Bool = true
+//    @AppStorage(K.MUSIC_ON) var musicOn : Bool = true
     
-    //@Published var settingsSet: Bool = false
-    @Published var categories: [Category] = []
-    @Published var levels: [Level] = []
-    @Published var gameScore = 0
-    @Published var questionScore = 5
-    @Published var highestScores = [0,0,0]
-    @Published var bSoundOn = true
-    @Published var bMusicOn = true
-
+    var categories: [Category] = []
+    var levels: [Level] = []
+    var gameScore = 0
+    var questionScore = 5
+    var highestScores = [0,0,0]
+    var bSoundOn = true
+    var bMusicOn = true
+    var bSettingsSet = UserDefaults.standard.bool(forKey: "K.USER_DEFAULTS_SETTINGS_SET")
+    
     func saveSettings() {
-        //UserDefaults.standard.set(true, forKey: K.USER_DEFAULTS_SETTINGS_SET)
         CategoryHelper().save(categories: categories)
         LevelHelper().save(levels: levels)
-        soundOn = bSoundOn
-        musicOn = bMusicOn
-        settingsSet = true
+        UserDefaults.standard.set(bSoundOn, forKey: "K.SOUND_ON")
+        UserDefaults.standard.set(bMusicOn, forKey: "K.MUSIC_ON")
+        bSettingsSet = true
+        UserDefaults.standard.set(true, forKey: "K.USER_DEFAULTS_SETTINGS_SET")
+        let settingsSet  = UserDefaults.standard.bool(forKey: "K.USER_DEFAULTS_SETTINGS_SET")
+        print("TRACE saveSettings called \(settingsSet)!")
     }
         
     func areSettingsValid() -> Bool {
@@ -67,9 +68,9 @@ final class GameVM: ObservableObject {
 
     // MARK: - Game Processing
         
-    @Published var status: Status = .NotStarted
-    @Published var questions : [Question] = []
-    @Published var idx : Int = 0
+    var status: Status = .NotStarted
+    var questions : [Question] = []
+    var idx : Int = 0
     
     func startGame() async {
         status = .Fetching
@@ -149,7 +150,7 @@ final class GameVM: ObservableObject {
             }
             
             // get the questions
-            let questions = try await repo.fetchQuestions(categories: catSearchString, difficulties: lvlSearchString)
+            let questions = try await QuestionRepository.fetchQuestions(categories: catSearchString, difficulties: lvlSearchString)
             self.questions = questions
             status = .Success
         } catch {
@@ -158,37 +159,79 @@ final class GameVM: ObservableObject {
         }
     }
 
+    // MARK: - Main Audio Player
+
+    var mAudioPlayer: AVAudioPlayer!
     
-    // MARK: - Init and clean-up
+    func mPlayAudio() {
+        let sound = Bundle.main.path(forResource: "trivia1", ofType: "mp3", inDirectory: "Sounds")
+        mAudioPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        mAudioPlayer.numberOfLoops = -1
+        if (bMusicOn) {
+            mAudioPlayer.volume = 1
+        } else {
+            mAudioPlayer.volume = 0
+        }
+        mAudioPlayer.play()
+    }
+        
+    func mStopMusic() {
+        if (mAudioPlayer != nil) {
+            mAudioPlayer.setVolume( 0, fadeDuration: 1)
+        }
+    }
+    
+    func mStartMusic() {
+        if (mAudioPlayer != nil) {
+            if (bMusicOn) {
+                mAudioPlayer.setVolume( 1, fadeDuration: 1)
+            }
+        }
+    }
+    // MARK: - Game Play Audio Player
+    
+    var gMusicPlayer: AVAudioPlayer!
+    
+    func gPlayMusic() {
+        let songs = ["trivia2","trivia3","trivia4","trivia5"]
+        let i = Int.random(in: 0...3)
+        let sound = Bundle.main.path(forResource: songs[i], ofType: "mp3", inDirectory: "Sounds")
+        gMusicPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
+        gMusicPlayer.numberOfLoops = -1
+        if (bMusicOn) {
+            gMusicPlayer.volume = 0.1
+        } else {
+            gMusicPlayer.volume = 0
+        }
+        gMusicPlayer.play()
+    }
+    
+    func gStopMusic() {
+        if (gMusicPlayer != nil) {
+            gMusicPlayer.setVolume( 0, fadeDuration: 1)
+        }
+    }
+    
+    func gStartMusic() {
+        if (gMusicPlayer != nil) {
+            if (bMusicOn) {
+                gMusicPlayer.setVolume( 0.1, fadeDuration: 1)
+            }
+        }
+    }
+    
+    // MARK: - Init
 
-    private var observers = [NSObjectProtocol]()
+    init() {
 
-    init(repo: QuestionRepository) {
-
-        self.repo = repo
-        //settingsSet = UserDefaults.standard.bool(forKey: K.USER_DEFAULTS_SETTINGS_SET)
         categories = CategoryHelper().get()
         levels = LevelHelper().get()
         highestScores = ScoreHelper().getScores()
-        bSoundOn = soundOn
-        bMusicOn = musicOn
+        if UserDefaults.standard.bool(forKey: "K.USER_DEFAULTS_SETTINGS_SET") == true {
+            bSoundOn = UserDefaults.standard.bool(forKey: "K.SOUND_ON")
+            bMusicOn =  UserDefaults.standard.bool(forKey: "K.MUSIC_ON")
+        }
         
-//        observers.append(
-//            NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
-//                // how to detect app started
-//            }
-//        )
-        observers.append(
-            NotificationCenter.default.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { _ in
-                // how to detect app stopped
-                Task {
-                    await self.endGame()
-                }
-            }
-        )
     }
     
-    deinit {
-        observers.forEach(NotificationCenter.default.removeObserver)
-    }
 }

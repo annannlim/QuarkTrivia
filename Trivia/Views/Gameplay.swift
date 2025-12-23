@@ -11,21 +11,17 @@ import AVKit
 
 struct Gameplay: View {
     
+    @Environment(GameVM.self) private var gameVM
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.requestReview) var requestReview
-    
-    @ObservedObject var gameVM : GameVM
-
+     
     @Namespace private var namespace
     
-    @State private var musicPlayer: AVAudioPlayer!
     @State private var sfxPlayer: AVAudioPlayer!
     
     @State private var animateViewsIn = false
     @State private var tappedCorrectAnswer = false
-    @State private var scaleNextButton = false
-    @State private var movePointsToScore = false
     @State private var wrongAnswersTapped: [String] = []
+    @State private var movePointsToScore = false
     @State private var showFetchError = false
     
     var body: some View {
@@ -34,99 +30,175 @@ struct Gameplay: View {
                 Image("backgroundBeach")
                     .resizable()
                     .frame(width:geo.size.width * 3, height: geo.size.height * 1.1)
-                    .overlay(Rectangle().foregroundColor(.black.opacity(0.8)))
+                    .overlay { Rectangle().foregroundColor(.black.opacity(0.8)) }
                     
                     VStack {
                         // MARK: Controls
                         HStack {
-                            Button("End Game") {
+
+                            Button {
                                 gameVM.endGame()
                                 dismiss()
-                                //requestReview()
+                            } label : {
+                                Text("End Game")
+                                    .padding(.horizontal, 8)
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(.red.opacity(0.5))
+                            
+
                             Spacer()
                             Text("Score: \(gameVM.gameScore)")
                         }
                         .padding()
-                        .padding(.top, 50)
+                        .padding(.horizontal)
+                        .padding(.top, UIDevice.current.userInterfaceIdiom == .phone ? 50 : 36)
                         
-                        // MARK: Question
                         VStack {
-                            if animateViewsIn {
-                                Text(gameVM.questions[gameVM.idx].question)
-                                    .minimumScaleFactor(0.5)
-                                    .font(.custom(K.MY_FONT, size: 24))
-                                    .multilineTextAlignment(.center)
-                                    .padding()
-                                    .transition(.scale)
-                                    .opacity(tappedCorrectAnswer ? 0.1 : 1)
-                            }
-                        }
-                        .animation(.easeInOut(duration: animateViewsIn ? 2 : 0), value: animateViewsIn)
-                        
-                        Spacer()
-                        
-                        // MARK: Answers
-                        LazyVGrid(columns: [GridItem()]){
+                            
+                            // MARK: Question
                             VStack {
                                 if animateViewsIn {
-                                    ForEach(gameVM.questions[gameVM.idx].allAnswers, id : \.self) { answer in
-                                        if answer == gameVM.questions[gameVM.idx].correctAnswer {
-                                            if tappedCorrectAnswer == false {
-                                                Text(answer)
-                                                    .minimumScaleFactor(0.5)
-                                                    .multilineTextAlignment(.center)
-                                                    .padding(10)
-                                                    .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
-                                                    .background(.green.opacity(0.5))
-                                                    .cornerRadius(25)
-                                                    .transition(.asymmetric(insertion: .scale, removal: .scale(scale:5).combined(with: .opacity.animation(.easeOut(duration:0.5)))))
-                                                    .matchedGeometryEffect(id: "answer", in: namespace)
-                                                    .onTapGesture {
-                                                        withAnimation(.easeOut(duration: 1)) {
-                                                            tappedCorrectAnswer = true
-                                                        }
-                                                        playCorrectSound()
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                                                            withAnimation {
-                                                                gameVM.gameScore += gameVM.questionScore
-                                                            }
+                                    Text(gameVM.questions[gameVM.idx].question)
+                                        .minimumScaleFactor(0.5)
+                                        .font(.custom(K.MY_FONT, size: 24))
+                                        .multilineTextAlignment(.center)
+                                        .padding()
+                                        .transition(.scale)
+                                }
+                            }
+                            .animation(.easeInOut(duration: animateViewsIn ? 2 : 0), value: animateViewsIn)
+                            
+                            Spacer()
+                            
+                            // MARK: Answers
+                            LazyVGrid(columns: [GridItem()]){
+                                
+                                 VStack {
+                                    if animateViewsIn {
+                                
+                                ForEach(gameVM.questions[gameVM.idx].allAnswers, id : \.self) { answer in
+
+                                    if answer == gameVM.questions[gameVM.idx].correctAnswer {
+
+//                                        VStack {
+//                                            if animateViewsIn {
+//                                                if !tappedCorrectAnswer {
+//                                                    Text(answer)
+//                                                        .minimumScaleFactor(0.5)
+//                                                        .multilineTextAlignment(.center)
+//                                                        .padding(10)
+//                                                        .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
+//                                                        .background(.green.opacity(0.5))
+//                                                        .cornerRadius(25)
+//                                                        .transition(.asymmetric(insertion: .scale, removal: .scale(scale:5).combined(with: .opacity.animation(.easeOut(duration:0.5)))))
+//                                                        .matchedGeometryEffect(id: 1, in: namespace)
+//                                                        .onTapGesture {
+//                                                            withAnimation(.easeOut(duration: 1)) {
+//                                                                tappedCorrectAnswer = true
+//                                                            }
+//                                                            playCorrectSound()
+//                                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+//                                                                withAnimation {
+//                                                                    gameVM.gameScore += gameVM.questionScore
+//                                                                }
+//                                                            }
+//                                                        }
+//
+//                                                }
+                                        
+                                        
+                                                Button {
+                                                    withAnimation(.easeOut(duration:1)) {
+                                                        tappedCorrectAnswer = true
+                                                    }
+                                                    playCorrectSound()
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                                                        withAnimation {
+                                                            gameVM.gameScore += gameVM.questionScore
                                                         }
                                                     }
+                                                } label: {
+                                                    Text(answer)
+                                                        .minimumScaleFactor(0.5)
+                                                        .multilineTextAlignment(.center)
+                                                        .padding(10)
+                                                        .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
+                                                        .background(.green.opacity(0.5))
+                                                        .clipShape(.rect(cornerRadius: 25))
+                                                        .matchedGeometryEffect(id: 1, in: namespace)
+                                                }
+                                                .transition(.asymmetric(insertion: .scale, removal: .scale(scale: 15).combined(with: .opacity)))
+                                        
+                                        
+//                                            }
+//                                        }
+//                                        .animation(.easeOut(duration: animateViewsIn ? 1 : 0).delay(animateViewsIn ? 1 : 0), value: animateViewsIn)
+                                        
+                                    } else {
+//                                        VStack {
+//                                            if animateViewsIn {
+                                        
+                                        Button {
+                                            withAnimation(.easeOut(duration: 1)) {
+                                                wrongAnswersTapped.append(answer)
                                             }
-                                        } else {
+                                            playWrongSound()
+                                            gameVM.questionScore -= 1
+                                            
+                                        } label: {
                                             Text(answer)
                                                 .minimumScaleFactor(0.5)
                                                 .multilineTextAlignment(.center)
                                                 .padding(10)
                                                 .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
-                                                .background(wrongAnswersTapped.contains(answer) ? .red.opacity(0.5): .green.opacity(0.5))
-                                                .cornerRadius(25)
-                                                .transition(.scale)
-                                                .onTapGesture {
-                                                    withAnimation(.easeOut(duration:1)) {
-                                                        wrongAnswersTapped.append(answer)
-                                                    }
-                                                    playWrongSound()
-                                                    giveWrongFeedback()
-                                                    gameVM.questionScore -= 1
-                                                }
+                                                .background(wrongAnswersTapped.contains(answer) ? .red.opacity(0.5) : .green.opacity(0.5))
+                                                .clipShape(.rect(cornerRadius: 25))
                                                 .scaleEffect(wrongAnswersTapped.contains(answer) ? 0.8 : 1)
-                                                .disabled(tappedCorrectAnswer || wrongAnswersTapped.contains(answer))
-                                                .opacity(tappedCorrectAnswer ? 0.1 : 1)
                                         }
+                                        .transition(.scale)
+                                        .sensoryFeedback(.error, trigger: wrongAnswersTapped)
+                                        .disabled(wrongAnswersTapped.contains(answer))
+                                        
+//                                                Text(answer)
+//                                                    .minimumScaleFactor(0.5)
+//                                                    .multilineTextAlignment(.center)
+//                                                    .padding(10)
+//                                                    .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
+//                                                    .background(wrongAnswersTapped.contains(answer) ? .red.opacity(0.5): .green.opacity(0.5))
+//                                                    .cornerRadius(25)
+//                                                    .transition(.scale)
+//                                                    .onTapGesture {
+//                                                        withAnimation(.easeOut(duration:1)) {
+//                                                            wrongAnswersTapped.append(answer)
+//                                                        }
+//                                                        playWrongSound()
+//                                                        gameVM.questionScore -= 1
+//                                                    }
+//                                                    .scaleEffect(wrongAnswersTapped.contains(answer) ? 0.8 : 1)
+//                                                    .sensoryFeedback(.error, trigger: wrongAnswersTapped)
+//                                                    .disabled(tappedCorrectAnswer || wrongAnswersTapped.contains(answer))
+//                                                    .opacity(tappedCorrectAnswer ? 0.1 : 1)
+////                                            }
+//                                        }
+//                                        .animation(.easeOut(duration: animateViewsIn ? 1 : 0).delay(animateViewsIn ? 1 : 0), value: animateViewsIn)
+//                                        
                                     }
                                 }
+                                
+                                    }
+                                }
+                                .animation(.easeIn(duration: animateViewsIn ? 1 : 0).delay(animateViewsIn ? 1 : 0), value: animateViewsIn)
                             }
-                            .animation(.easeIn(duration: animateViewsIn ? 1 : 0).delay(animateViewsIn ? 1 : 0), value: animateViewsIn)
+                            
+                            Spacer()
+                            
                         }
-                        
-                        Spacer()
+                        .disabled(tappedCorrectAnswer)
+                        .opacity(tappedCorrectAnswer ? 0.1 : 1)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
-                    .foregroundColor(.white)
+
                 
                 // MARK: Celebration
                 VStack {
@@ -169,14 +241,15 @@ struct Gameplay: View {
                     if tappedCorrectAnswer && !gameVM.isLastQuestion() {                        
                         Text(gameVM.questions[gameVM.idx].correctAnswer)
                             .font(.largeTitle)
+                            .minimumScaleFactor(0.5)
                             .multilineTextAlignment(.center)
-                            .minimumScaleFactor(0.3)
                             .padding(10)
-                        .frame(width: geo.size.width > 740 ? geo.size.width/2 : geo.size.width/1.6, height: 100)
-                        .background(.green.opacity(0.5))
-                            .cornerRadius(25)
-                            .scaleEffect(1.5)
-                            .matchedGeometryEffect(id: "answer", in: namespace)
+                            .frame(width: geo.size.width > 740 ? geo.size.width/1.75 : geo.size.width/1.15, height: 100)
+                            .background(.green.opacity(0.5))
+                            .clipShape(.rect(cornerRadius: 25))
+                            .matchedGeometryEffect(id: 1, in: namespace)
+                            .scaleEffect(UIDevice.current.userInterfaceIdiom == .phone ? 1.1 : 1.5)
+                        
                     }
 
                     Spacer()
@@ -187,7 +260,9 @@ struct Gameplay: View {
                             if (gameVM.isLastQuestion()) {
                                 Text("You scored \(gameVM.gameScore) out of \(K.QUESTIONS_PER_GAME * 5)!")
                                     .font(.largeTitle)
-                                Button("Play Again?") {
+                                
+                                
+                                Button {
                                     // Reset for next game
                                     gameVM.endGame()
                                     Task {
@@ -213,22 +288,25 @@ struct Gameplay: View {
                                             break
                                         }
                                     }
-                                   
+                                } label: {
+                                    Text("Play Again?")
+                                        .font(.largeTitle)
+                                        .padding(.horizontal, 24)
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.blue.opacity(0.5))
-                                .font(.largeTitle)
                                 .transition(.offset(y:geo.size.height/3))
-                                .scaleEffect(scaleNextButton ? 1.2 : 1)
-                                .onAppear {
-                                    withAnimation(.easeInOut(duration: 1.3).repeatForever()) {
-                                        scaleNextButton.toggle()
-                                    }
+                                .phaseAnimator([false,true]) { content, phase in
+                                    content
+                                        .scaleEffect(phase ? 1.2 : 1)
+                                    
+                                } animation: { _ in
+                                        .easeInOut(duration: 1.3)
                                 }
 
                             } else {
                                 
-                                Button("Next Question") {
+                                Button {
                                     // Reset level for next question
                                     animateViewsIn = false
                                     tappedCorrectAnswer = false
@@ -238,17 +316,50 @@ struct Gameplay: View {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                         animateViewsIn = true
                                     }
+                                } label: {
+                                    Text("Next Question")
+                                        .font(.largeTitle)
+                                        .padding(.horizontal, 24)
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.blue.opacity(0.5))
-                                .font(.largeTitle)
                                 .transition(.offset(y:geo.size.height/3))
-                                .scaleEffect(scaleNextButton ? 1.2 : 1)
-                                .onAppear {
-                                    withAnimation(.easeInOut(duration: 1.3).repeatForever()) {
-                                        scaleNextButton.toggle()
-                                    }
+                                .phaseAnimator([false,true]) { content, phase in
+                                    content
+                                        .scaleEffect(phase ? 1.2 : 1)
+                                    
+                                } animation: { _ in
+                                        .easeInOut(duration: 1.3)
                                 }
+
+//                                Button("Next Question") {
+//                                    // Reset level for next question
+//                                    animateViewsIn = false
+//                                    tappedCorrectAnswer = false
+//                                    movePointsToScore = false
+//                                    wrongAnswersTapped = []
+//                                    gameVM.nextQuestion()
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                        animateViewsIn = true
+//                                    }
+//                                }
+//                                .buttonStyle(.borderedProminent)
+//                                .tint(.blue.opacity(0.5))
+//                                .font(.largeTitle)
+//                                .transition(.offset(y:geo.size.height/3))
+//                                .phaseAnimator([false,true]) { content, phase in
+//                                    content
+//                                        .scaleEffect(phase ? 1.2 : 1)
+//                                    
+//                                } animation: { _ in
+//                                        .easeInOut(duration: 1.3)
+//                                }
+//                                .scaleEffect(scaleNextButton ? 1.2 : 1)
+//                                .onAppear {
+//                                    withAnimation(.easeInOut(duration: 1.3).repeatForever()) {
+//                                        scaleNextButton.toggle()
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -262,12 +373,20 @@ struct Gameplay: View {
 
             }
             .frame(width: geo.size.width, height: geo.size.height)
+            .foregroundStyle(.white)
         }
         .ignoresSafeArea()
-        .onAppear() {
-            animateViewsIn = true
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                animateViewsIn = true
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                playMusic()
+                gameVM.gPlayMusic()
+            }
+        }
+        .onDisappear() {
+            DispatchQueue.main.asyncAfter(deadline: .now() ) {
+                gameVM.gStopMusic()
             }
         }
         .alert("Oops! We are unable to retrieve questions from the internet at this time.", isPresented: $showFetchError) {
@@ -299,24 +418,6 @@ struct Gameplay: View {
         sfxPlayer.play()
     }
     
-    private func giveWrongFeedback() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error)
-    }
-    
-    private func playMusic() {
-        let songs = ["trivia2","trivia3","trivia4","trivia5"]
-        let i = Int.random(in: 0...3)
-        let sound = Bundle.main.path(forResource: songs[i], ofType: "mp3", inDirectory: "Sounds")
-        musicPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
-        musicPlayer.numberOfLoops = -1
-        if (gameVM.bMusicOn) {
-            musicPlayer.volume = 0.1
-        } else {
-            musicPlayer.volume = 0
-        }
-        musicPlayer.play()
-    }
 }
 
 //#Preview {

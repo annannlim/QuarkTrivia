@@ -27,7 +27,7 @@ struct Credits: View {
                             CreditsLogo()
                             CreditsText()
                             Spacer()
-                            CreditsWhoWeAre()
+                            CreditsVersionCopyright()
                             CreditsDone()
                             Spacer()
                         }
@@ -38,17 +38,16 @@ struct Credits: View {
                         ScrollView {
                             CreditsText()
                         }
-                        CreditsWhoWeAre()
+                        CreditsVersionCopyright()
                         CreditsDone()
                     }
 
                 }
                 .foregroundColor(.black)
             }
-            
-
+        
         }
-
+        .statusBarHidden()
     }
 
 }
@@ -89,7 +88,7 @@ struct CreditsText: View {
     }
 }
 
-struct CreditsWhoWeAre: View {
+struct CreditsVersionCopyright: View {
     var body: some View {
         Text("Version \(getVersion())")
         Text(getCopyright())

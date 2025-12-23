@@ -11,6 +11,12 @@
 		9E0336C12BA373D2008FF542 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E0336C02BA373D2008FF542 /* Launch Screen.storyboard */; };
 		9E3BAAEC2B9A3998004BC081 /* LevelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3BAAEB2B9A3998004BC081 /* LevelHelper.swift */; };
 		9E3BAAEE2B9A4104004BC081 /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E3BAAED2B9A4104004BC081 /* Gameplay.swift */; };
+		9E7BDBC92EF84F560055E86C /* GameTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBC82EF84F560055E86C /* GameTitle.swift */; };
+		9E7BDBCB2EF84F6F0055E86C /* BestScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBCA2EF84F6F0055E86C /* BestScores.swift */; };
+		9E7BDBD12EF852300055E86C /* HintText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBD02EF852300055E86C /* HintText.swift */; };
+		9E7BDBD32EF8543D0055E86C /* InstructionsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBD22EF8543D0055E86C /* InstructionsButton.swift */; };
+		9E7BDBD52EF8544C0055E86C /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBD42EF8544C0055E86C /* SettingsButton.swift */; };
+		9E7BDBD72EF854590055E86C /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BDBD62EF854590055E86C /* PlayButton.swift */; };
 		9EB01DED2B98C3680015C88C /* TriviaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB01DEC2B98C3680015C88C /* TriviaApp.swift */; };
 		9EB01DEF2B98C3680015C88C /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB01DEE2B98C3680015C88C /* Main.swift */; };
 		9EB01DF12B98C3690015C88C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EB01DF02B98C3690015C88C /* Assets.xcassets */; };
@@ -36,6 +42,12 @@
 		9E0336C02BA373D2008FF542 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9E3BAAEB2B9A3998004BC081 /* LevelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHelper.swift; sourceTree = "<group>"; };
 		9E3BAAED2B9A4104004BC081 /* Gameplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gameplay.swift; sourceTree = "<group>"; };
+		9E7BDBC82EF84F560055E86C /* GameTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTitle.swift; sourceTree = "<group>"; };
+		9E7BDBCA2EF84F6F0055E86C /* BestScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestScores.swift; sourceTree = "<group>"; };
+		9E7BDBD02EF852300055E86C /* HintText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintText.swift; sourceTree = "<group>"; };
+		9E7BDBD22EF8543D0055E86C /* InstructionsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsButton.swift; sourceTree = "<group>"; };
+		9E7BDBD42EF8544C0055E86C /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
+		9E7BDBD62EF854590055E86C /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		9EB01DE92B98C3680015C88C /* Trivia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trivia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EB01DEC2B98C3680015C88C /* TriviaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriviaApp.swift; sourceTree = "<group>"; };
 		9EB01DEE2B98C3680015C88C /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -71,6 +83,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E7BDBC72EF84EEE0055E86C /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+				9EEBF3132EF31FB900E34DFD /* AnimatedBackground.swift */,
+				9E7BDBC82EF84F560055E86C /* GameTitle.swift */,
+				9E7BDBCA2EF84F6F0055E86C /* BestScores.swift */,
+				9E7BDBD02EF852300055E86C /* HintText.swift */,
+				9E7BDBD22EF8543D0055E86C /* InstructionsButton.swift */,
+				9E7BDBD62EF854590055E86C /* PlayButton.swift */,
+				9E7BDBD42EF8544C0055E86C /* SettingsButton.swift */,
+			);
+			path = MainViews;
+			sourceTree = "<group>";
+		};
 		9EB01DE02B98C3680015C88C = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +158,7 @@
 			children = (
 				9E0336C02BA373D2008FF542 /* Launch Screen.storyboard */,
 				9EB01DEE2B98C3680015C88C /* Main.swift */,
-				9EEBF3132EF31FB900E34DFD /* AnimatedBackground.swift */,
+				9E7BDBC72EF84EEE0055E86C /* MainViews */,
 				9EEE97F42B99E678003AFD9F /* Instructions.swift */,
 				9E0336BE2BA350A0008FF542 /* Credits.swift */,
 				9EEE97F82B99FD0B003AFD9F /* Settings.swift */,
@@ -231,15 +257,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E7BDBD12EF852300055E86C /* HintText.swift in Sources */,
 				9EB01E032B98C57E0015C88C /* QuestionRepository.swift in Sources */,
 				9EB01DFD2B98C46F0015C88C /* Question.swift in Sources */,
 				9EEE97F52B99E678003AFD9F /* Instructions.swift in Sources */,
 				9EB01DFF2B98C47E0015C88C /* Level.swift in Sources */,
+				9E7BDBD72EF854590055E86C /* PlayButton.swift in Sources */,
+				9E7BDBD32EF8543D0055E86C /* InstructionsButton.swift in Sources */,
+				9E7BDBCB2EF84F6F0055E86C /* BestScores.swift in Sources */,
 				9EB01DEF2B98C3680015C88C /* Main.swift in Sources */,
 				9E3BAAEE2B9A4104004BC081 /* Gameplay.swift in Sources */,
 				9EEE97F92B99FD0B003AFD9F /* Settings.swift in Sources */,
 				9EEE97FF2B9A0989003AFD9F /* FileHelper.swift in Sources */,
 				9EE4BE222B9C9F1F009E51A2 /* ScoreHelper.swift in Sources */,
+				9E7BDBD52EF8544C0055E86C /* SettingsButton.swift in Sources */,
 				9E0336BF2BA350A0008FF542 /* Credits.swift in Sources */,
 				9EEBF3142EF31FB900E34DFD /* AnimatedBackground.swift in Sources */,
 				9EB01E272B98E4140015C88C /* Constants.swift in Sources */,
@@ -249,6 +280,7 @@
 				9EB01E052B98C5B00015C88C /* GameVM.swift in Sources */,
 				9EEE98012B9A0BCD003AFD9F /* Category.swift in Sources */,
 				9EEE98032B9A10E7003AFD9F /* CategoryHelper.swift in Sources */,
+				9E7BDBC92EF84F560055E86C /* GameTitle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,7 +414,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Trivia/Trivia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Trivia/Preview Content\"";
 				ENABLE_APP_SANDBOX = YES;
@@ -401,6 +433,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -409,7 +442,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.quarksolutions.Trivia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -417,7 +450,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -429,7 +462,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Trivia/Trivia.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Trivia/Preview Content\"";
 				ENABLE_APP_SANDBOX = YES;
@@ -448,6 +481,7 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -456,7 +490,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.quarksolutions.Trivia;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -464,7 +498,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
